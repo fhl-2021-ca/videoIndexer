@@ -6,7 +6,7 @@ import apisamples.authentication.ArmAccessTokenScope;
 
 public class App {
 
-    private static final String VideoUrl = "<Place_Your_Video_URL_HERE>";
+    private static final String VideoUrl = "https://aseemgoyalstorageaccount.blob.core.windows.net/fhl/SP%20search%20semantic%20search%20short.mp4";//"https://aseemgoyalstorageaccount.blob.core.windows.net/fhl/SP search semantic search short.mp4";
 
     public static void main(String[] args) {
 

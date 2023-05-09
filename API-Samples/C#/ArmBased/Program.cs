@@ -16,11 +16,12 @@ namespace VideoIndexerArm
     {
         private const string ApiVersion = "2022-08-01";
         private const string AzureResourceManager = "https://management.azure.com";
-        private const string SubscriptionId = "<Your Subscription Id Here>";
-        private const string ResourceGroup = "<Your Resource Gropup Name Here>";
-        private const string AccountName = "<Your Video Indexer Account Name Here>";
-        private const string VideoUrl = "<Your Video Url Here>";
+        private const string VideoUrl = "https://aseemgoyalstorageaccount.blob.core.windows.net/fhl/SP%20search%20semantic%20search%20short.mp4";
         private const string ApiUrl = "https://api.videoindexer.ai";
+
+        private const string SubscriptionId = "1efcfc5c-8fc0-44da-a91a-99b94841290b";
+        private const string ResourceGroup = "aseemgoyalFHL";
+        private const string AccountName = "videoindexeraseem1";
 
         public static async Task Main(string[] args)
         {
@@ -54,13 +55,13 @@ namespace VideoIndexerArm
             var videoAccessToken = await videoIndexerResourceProviderClient.GetAccessToken(ArmAccessTokenPermission.Contributor, ArmAccessTokenScope.Video, videoId);
 
             // Search for the video
-            await GetVideo(accountId, accountLocation, videoAccessToken, ApiUrl, client, videoId);
+            String results = await GetVideoAsync(accountId, accountLocation, videoAccessToken, ApiUrl, client, videoId);
 
             // Get insights widget url
-            await GetInsightsWidgetUrl(accountId, accountLocation, videoAccessToken, ApiUrl, client, videoId);
+            //await GetInsightsWidgetUrl(accountId, accountLocation, videoAccessToken, ApiUrl, client, videoId);
 
             // Get player widget url
-            await GetPlayerWidgetUrl(accountId, accountLocation, videoAccessToken, ApiUrl, client, videoId);
+            //await GetPlayerWidgetUrl(accountId, accountLocation, videoAccessToken, ApiUrl, client, videoId);
 
             Console.WriteLine("\nPress Enter to exit...");
             String line = Console.ReadLine();
@@ -178,7 +179,7 @@ namespace VideoIndexerArm
         /// <param name="client"> The http client </param>
         /// <param name="videoId"> The video id </param>
         /// <returns> Prints the video metadata, otherwise throws excpetion</returns>
-        private static async Task GetVideo(string accountId, string accountLocation, string videoAccessToken, string apiUrl, HttpClient client, string videoId)
+        private static async Task<string> GetVideoAsync(string accountId, string accountLocation, string videoAccessToken, string apiUrl, HttpClient client, string videoId)
         {
             Console.WriteLine($"\nSearching videos in account {AccountName} for video ID {videoId}.");
             var queryParams = CreateQueryString(
@@ -195,11 +196,14 @@ namespace VideoIndexerArm
                 VerifyStatus(searchRequestResult, System.Net.HttpStatusCode.OK);
                 var searchResult = await searchRequestResult.Content.ReadAsStringAsync();
                 Console.WriteLine($"Here are the search results: \n{searchResult}");
+                return searchResult;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+
+            return null;
         }
 
         /// <summary>

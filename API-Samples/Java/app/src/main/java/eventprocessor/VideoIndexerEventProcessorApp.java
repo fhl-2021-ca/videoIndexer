@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class VideoIndexerEventProcessorApp {
     // The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
     // {your-namespace}.servicebus.windows.net
-    private static final String EVENT_HUBS_NAMESPACE = "<Your_Event_Hubs_Namespace_Here>";
-    private static final String EVENT_HUB_NAME = "<Your_Event_Hub_Name_Here>";
+    private static final String EVENT_HUBS_NAMESPACE = "eventhubaseem";
+    private static final String EVENT_HUB_NAME = "eventhub1";
     private static final String CONSUMER_GROUP_NAME = "events";
 
     public static void main(String[] args) throws InterruptedException {

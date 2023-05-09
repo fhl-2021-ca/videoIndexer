@@ -32,9 +32,9 @@ import static java.util.UUID.*;
 
 public class VideoIndexerClient {
     private static final String AzureResourceManager = "https://management.azure.com";
-    private static final String SubscriptionId = "<Your_Subscription_Id_here>";
-    private static final String ResourceGroup = "<Your_Resource_Group_here>";
-    private static final String AccountName = "<Your_Account_Name_Here>";
+    private static final String SubscriptionId = "1efcfc5c-8fc0-44da-a91a-99b94841290b";
+    private static final String ResourceGroup = "aseemgoyalFHL";
+    private static final String AccountName = "videoindexeraseem1";
     private static final String ApiVersion = "2022-08-01";
     private static final String ApiUrl = "https://api.videoindexer.ai";
     
@@ -65,6 +65,7 @@ public class VideoIndexerClient {
         tokenRequestContext.addScopes(String.format("%s/.default", AzureResourceManager));
 
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        // Do az login and set default subscription...az account set --subscription 1efcfc5c-8fc0-44da-a91a-99b94841290b
         String accessToken = Objects.requireNonNull(defaultCredential.getToken(tokenRequestContext).block()).getToken();
         return new VideoIndexerClient(accessToken);
     }
@@ -82,17 +83,21 @@ public class VideoIndexerClient {
         var requestUri = MessageFormat.format("{0}/subscriptions/{1}/resourcegroups/{2}/providers/Microsoft.VideoIndexer/accounts/{3}/generateAccessToken?api-version={4}",
                                               AzureResourceManager, SubscriptionId, ResourceGroup, AccountName, ApiVersion);
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(requestUri))
-                    .headers("Content-Type", "application/json;charset=UTF-8")
-                    .headers("Authorization", "Bearer " + this.armAccessToken)
-                    .POST(HttpRequest.BodyPublishers.ofString(accessTokenRequestStr))
-                    .build();
 
-            var response = httpStringResponse(request);
-            AccessTokenResponse accessTokenResponse = gson.fromJson(response.body(), AccessTokenResponse.class);
-            this.accountAccessToken = accessTokenResponse.accessToken;
-        } catch (URISyntaxException | IOException | InterruptedException ex) {
+            // Getting content length error
+
+//            HttpRequest request = HttpRequest.newBuilder()
+//                    .uri(new URI(requestUri))
+//                    .headers("Content-Type", "application/json;charset=UTF-8")
+//                    .headers("Authorization", "Bearer " + this.armAccessToken)
+//                    .POST(HttpRequest.BodyPublishers.ofString(accessTokenRequestStr))
+//                    .build();
+//
+//            var response = httpStringResponse(request);
+//            AccessTokenResponse accessTokenResponse = gson.fromJson(response.body(), AccessTokenResponse.class);
+//            this.accountAccessToken = accessTokenResponse.accessToken;
+            this.accountAccessToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJWZXJzaW9uIjoiMi4wLjAuMCIsIktleVZlcnNpb24iOiIxNGU0M2M5NDFlOWI0OTg1OWU0NDkzNDFhZjgxZjNiNiIsIkFjY291bnRJZCI6IjMxM2JiZTFkLWYzYzctNDRkNi1hYzc5LTNiNmU2OTgwOTFlOSIsIkFjY291bnRUeXBlIjoiQXJtIiwiUGVybWlzc2lvbiI6IkNvbnRyaWJ1dG9yIiwiRXh0ZXJuYWxVc2VySWQiOiJFMTBCOTk5MDEwMzA0RjJDQkNCNENCOTlBQzhDM0Y1MCIsIlVzZXJUeXBlIjoiTWljcm9zb2Z0Q29ycEFhZCIsIklzc3VlckxvY2F0aW9uIjoiZWFzdHVzIiwibmJmIjoxNjgzNTQ3MDI4LCJleHAiOjE2ODM1NTA5MjgsImlzcyI6Imh0dHBzOi8vYXBpLnZpZGVvaW5kZXhlci5haS8iLCJhdWQiOiJodHRwczovL2FwaS52aWRlb2luZGV4ZXIuYWkvIn0.QCWC4_hGt4z1OCsbqIBYWMWr-pLVScbaNu2bt7T1kjNW0oTdgMxlfIM7-tcpiIcW0PdD6gasDDFfpcYhKh3f1mLovBhGcBXdIoG0DGSU9L03fbcjglLYuPgimcCOfBNnQoQVd26OzNovnAQ5PXQ6hMjXgoU3xqcBDISg9zHbKym5Bf9OJQqL8xxQS6yAjQuli0t_dLX-U5iPBjrCOOv5C1Iw1AKCKOHPYxa_nTfRk4KLc1a8x4gATEdmNi3D0kOCtbF3NTXdMuYiKQiEL3iqhFeTyGmLcgVbrWlj2pLgTiCPJmpxKz0-yxIJTu4TUu4d6OgX24i0itCkVLmTJLLXkg";
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -132,6 +137,7 @@ public class VideoIndexerClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(requestUri))
                     .header("Content-Type", "application/json")
+                    //.header("Content-Length", "0")
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
 
